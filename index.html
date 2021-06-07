@@ -46,7 +46,6 @@ function loadDoc() {
 
 function display_answers(question_index)
 {
-    loadDoc(); 
     document.getElementById("question_label").innerHTML = questions["teil-mathe"][question_index]["a"];
     answers = questions["teil-mathe"][question_index]["l"];
     console.log(answers);
@@ -139,14 +138,27 @@ function answer_button_callback(event)
 
 function display_stats()
 {
+
+    // delete 
+    while(document.body.firstChild != null)
+        document.body.removeChild(document.body.firstChild);
+
+    
+
+
     l_correct_answers = document.createElement("LABEL");
+    l_correct_answers.innerHTML = "richtig: "+n_correct_answers + " von ";
     //l_correct_answers.inn
     l_wrong_answers = document.createElement("LABEL");
+    l_wrong_answers.innerHTML = "falsch: "+ n_wrong_answers;
+
+    document.body.appendChild(l_correct_answers);
+    document.body.appendChild(l_wrong_answers);
     return;
 }
     </script>
 </head>
-<body onload="display_answers(current_question_index);loadDoc();">
+<body onload="display_answers(current_question_index);">
 
     <div id="question_label"></div>
     <div id="question_box"></div>
