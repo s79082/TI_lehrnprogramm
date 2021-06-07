@@ -5,6 +5,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lernprogramm</title>
+    <link rel="stylesheet" href="style.css">
+
     <script>
         const questions = { 
     "teil-mathe": [
@@ -25,8 +27,26 @@ var current_question_index = 0;
 var n_correct_answers = 0;
 var n_wrong_answers = 0;
 
+function loadDoc() {
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+     document.getElementById("demo").innerHTML = this.responseText;
+    }
+  };
+  //xhttp.withCredentials = false;
+    xhttp.open("GET", "https://irene.informatik.htw-dresden.de/it1/js/ajaxdemo.txt", true);
+    xhttp.setRequestHeader( 'Access-Control-Allow-Origin', '*');
+
+  
+
+  
+  xhttp.send();
+}
+
 function display_answers(question_index)
 {
+    loadDoc(); 
     document.getElementById("question_label").innerHTML = questions["teil-mathe"][question_index]["a"];
     answers = questions["teil-mathe"][question_index]["l"];
     console.log(answers);
@@ -58,6 +78,8 @@ function display_answers(question_index)
 
         btn = document.createElement("BUTTON");
         btn.innerText = element;
+
+        btn.setAttribute("class", "btn")
 
 
         //btn.onclick = answer_button_callback;
@@ -94,22 +116,25 @@ function answer_button_callback(event)
 {
     // get the index from list item (parent)
     selected_idx = event.target.parentElement.value;
-            console.log(selected_idx);
-            console.log(correct_idx);
+    console.log(selected_idx);
+    console.log(correct_idx);
 
-            current_question_index++;
+    current_question_index++;
 
-            if (selected_idx == correct_idx)                
-                n_correct_answers++;
+    if (selected_idx == correct_idx)                
+        n_correct_answers++;
                 
-            else
-                n_wrong_answers++;
+    else
+        n_wrong_answers++;
             
+    len = questions["teil-mathe"].length;
 
-            if (current_question_index < questions.length)
-                display_answers(current_question_index);
-            else
-                display_stats();
+    console.log(current_question_index);
+    console.log(len);
+    if (current_question_index < len)
+        display_answers(current_question_index);
+    else
+        display_stats();
 }
 
 function display_stats()
@@ -121,7 +146,7 @@ function display_stats()
 }
     </script>
 </head>
-<body onload="display_answers(current_question_index);">
+<body onload="display_answers(current_question_index);loadDoc();">
 
     <div id="question_label"></div>
     <div id="question_box"></div>
