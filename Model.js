@@ -11,17 +11,26 @@ class Model
           ],
         "teil-allgemein": [
           {"a":"Karl der Große, Geburtsjahr", "l":["747","828","650","1150"]},
-          ]};8
+          ]};
 
     constructor()
           {
-        super();
           }
 
     getQuestionsAndAnswers(teilgebiet) 
     {
         return this.questions[teilgebiet];
         
+    }
+
+    getQuestionAndAnswers(topic, question_index)
+    {
+        return this.questions[topic][question_index];
+    }
+
+    getTasks(topic)
+    {
+        return this.questions[topic];
     }
           
     

@@ -1,15 +1,9 @@
 // only the Presenter manipulates the DOM to display the App
 
-import { View } from "./View";
-
-export class Presenter
+class Presenter
 {
-    answer_list: any;
-    question_label: any;
-    stats_label: any;
-    view: View;
 
-    constructor(view: View, answer_list, question_label, stats_label)
+    constructor(view, answer_list, question_label, stats_label)
     {
         this.answer_list = answer_list;
         this.question_label = question_label;
@@ -20,39 +14,34 @@ export class Presenter
 
     displayAnswers(answers)
     {
-    //answers = questions["teil-mathe"][question_index]["l"];
-    console.log(answers);
-    //answer_list = document.getElementById("answer_list");
+    
+        // clear answer list
+        this.clearChilds(this.answer_list);
 
-    // clear elements
-    this.clearChilds(this.answer_list);
+        var index_count = 0;
 
-    // save correct answer
-    var correct = answers[0];
+        answers.forEach(element => {
+            var item = document.createElement("LI");
 
-    // shuffle answers 
-    answers = answers.sort(() => Math.random() - 0.5);
+            // save the index in the list item
+            item.value = index_count.toString();
+            index_count++;
 
-    // get correct answer index
-    var correct_idx = answers.indexOf(correct);
+            var btn = document.createElement("BUTTON");
+            btn.innerText = element;
 
-    var index_count = 0;
+            btn.setAttribute("class", "btn")
 
-    answers.forEach(element => {
-        var item = <HTMLInputElement> document.createElement("LI");
+            btn.addEventListener("click", (event) =>
+                // give the list item value back to view; its the selected index
+                this.view.on_answer_selected(event.target.parentElement.value)
+            );
 
-        // save the index in the list item
-        item.value = index_count.toString();
-        index_count++;
 
-        var btn = document.createElement("BUTTON");
-        btn.innerText = element;
 
-        btn.setAttribute("class", "btn")
 
-        btn.onclick = this.view
         //btn.onclick = answer_button_callback;
-        btn.onclick = (event) =>
+        /*btn.onclick = (event) =>
         {
             // get the index from list item (parent)
             selected_idx = event.target.parentElement.value;
@@ -75,9 +64,9 @@ export class Presenter
                 display_answers(current_question_index);
             else
                 display_stats();
-        }
+        }*/
         item.appendChild(btn);
-        answer_list.appendChild(item);
+        this.answer_list.appendChild(item);
     });
 
     }
@@ -88,9 +77,9 @@ export class Presenter
 
     }
 
-    displayStats()
+    displayStats(right, wrong, total)
     {
-
+        this.stats_label.innerHTML = "Herzlichen Glückwunsch! Du hast von "+ total+ " Fragen " + right +" richtig und "+ wrong + " falsch beantwortet :)";
     }
 
     clearChilds(parent)

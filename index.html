@@ -7,6 +7,11 @@
     <title>Lernprogramm</title>
     <link rel="stylesheet" href="style.css">
 
+    <script type="text/javascript" src="View.js"></script>
+    <script type="text/javascript" src="Presenter.js"></script>
+    <script type="text/javascript" src="Model.js"></script>
+
+
     <script>
         const questions = { 
     "teil-mathe": [
@@ -156,12 +161,27 @@ function display_stats()
     document.body.appendChild(l_wrong_answers);
     return;
 }
+
+function setup()
+{   
+    lanswer = document.getElementById("answer_list");
+    lquestion = document.getElementById("question_label");
+    lstats = document.getElementById("stats_label");
+    presenter = new Presenter(null, lanswer, lquestion, lstats);
+    model = new Model();
+    view = new View(model, presenter);
+    presenter.view = view;
+    view.init();
+    view.on_topic_selected("teil-mathe");
+    view.sendTask()    
+}
     </script>
 </head>
-<body onload="display_answers(current_question_index);">
+<body onload="setup();">
 
     <div id="question_label"></div>
     <div id="question_box"></div>
+    <label id="stats_label"></label>
     <ol id="answer_list"></ol>
     
 </body>
