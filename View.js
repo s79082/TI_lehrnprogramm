@@ -73,10 +73,18 @@ class View
             return;
         }
         if (answer_index == this.correct_answer_index)
+        {
             this.right_answers++;
+            this.presenter.colorButton(answer_index, "green");
+        }
+            
         else
+        {
             this.wrong_answers++;
+            this.presenter.colorButton(answer_index, "red");
 
+
+        }
         // next question
         this.current_question_index++;
 
@@ -84,9 +92,10 @@ class View
         console.log("curr "+this.current_question_index)
         console.log("tot "+ this.total_questions)
         if(this.current_question_index >= this.total_questions)
-            this.presenter.displayStats(this.right_answers, this.wrong_answers, this.total_questions);
+            setTimeout(() => this.presenter.displayStats(this.right_answers, this.wrong_answers, this.total_questions), 1000);
         else
-            this.sendTask();
+            setTimeout(() => this.sendTask(), 1000);
+            
         console.log("selec2")
 
             
