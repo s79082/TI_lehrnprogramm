@@ -17,9 +17,10 @@ class Model
           {
           }
 
+          // depreceated
     getQuestionsAndAnswers(teilgebiet) 
     {
-        return this.questions[teilgebiet];
+      return this.questions[teilgebiet];
         
     }
 
@@ -30,7 +31,12 @@ class Model
 
     getTasks(topic)
     {
-        return this.questions[topic];
+      return this.questions[topic];
+    }
+
+    getTopics()
+    {
+      return Object.keys(this.questions);
     }
           
     

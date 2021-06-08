@@ -28,6 +28,7 @@ class View
     {
         this.init();
         this.current_topic = topic;
+        this.current_question_index = 0;
         this.total_questions = this.model.getTasks(topic).length;
 
         this.sendTask();
