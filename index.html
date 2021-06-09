@@ -12,21 +12,8 @@
     <script type="text/javascript" src="Model.js"></script>
 
 
-    <script>
-        const questions = { 
-    "teil-mathe": [
-      {"a":"x^2+x^2", "l":["2x^2","x^4","x^8","2x^4"]},
-      {"a":"x^2*x^2", "l":["x^4","x^2","2x^2","4x"]}
-      ],
-    "teil-internettechnologien": [
-      {"a":"Welche Authentifizierung bietet HTTP", "l":["Digest Access Authentication","OTP","OAuth","2-Faktor-Authentifizierung"]},
-      {"a":"Welches Transportprotokoll eignet sich für zeitkritische Übertragungen", "l":["UDP","TCP","HTTP","Fast Retransmit"]},
-      ],
-    "teil-allgemein": [
-      {"a":"Karl der Große, Geburtsjahr", "l":["747","828","650","1150"]},
-      ]  
 
-};
+<script>
 
 var current_question_index = 0; 
 var n_correct_answers = 0;
@@ -47,119 +34,6 @@ function loadDoc() {
 
   
   xhttp.send();
-}
-
-function display_answers(question_index)
-{
-    document.getElementById("question_label").innerHTML = questions["teil-mathe"][question_index]["a"];
-    answers = questions["teil-mathe"][question_index]["l"];
-    console.log(answers);
-    answer_list = document.getElementById("answer_list");
-
-    // clear elements
-    while (answer_list.firstChild != null)
-    {
-        answer_list.removeChild(answer_list.firstChild);
-    }
-
-    // save correct answer
-    correct = answers[0];
-
-    // shuffle answers 
-    answers = answers.sort(() => Math.random() - 0.5);
-
-    // get correct answer index
-    correct_idx = answers.indexOf(correct);
-
-    index_count = 0;
-
-    answers.forEach(element => {
-        item = document.createElement("LI");
-
-        // save the index in the list item
-        item.value = index_count;
-        index_count++;
-
-        btn = document.createElement("BUTTON");
-        btn.innerText = element;
-
-        btn.setAttribute("class", "btn")
-
-
-        //btn.onclick = answer_button_callback;
-        btn.onclick = (event) =>
-        {
-            // get the index from list item (parent)
-            selected_idx = event.target.parentElement.value;
-            console.log(selected_idx);
-            console.log(correct_idx);
-
-            current_question_index++;
-
-            if (selected_idx == correct_idx)                
-                n_correct_answers++;
-                
-            else
-                n_wrong_answers++;
-            
-            len = questions["teil-mathe"].length;
-
-            console.log(current_question_index);
-            console.log(len);
-            if (current_question_index < len)
-                display_answers(current_question_index);
-            else
-                display_stats();
-        }
-        item.appendChild(btn);
-        answer_list.appendChild(item);
-    });
-}
-
-function answer_button_callback(event)
-{
-    // get the index from list item (parent)
-    selected_idx = event.target.parentElement.value;
-    console.log(selected_idx);
-    console.log(correct_idx);
-
-    current_question_index++;
-
-    if (selected_idx == correct_idx)                
-        n_correct_answers++;
-                
-    else
-        n_wrong_answers++;
-            
-    len = questions["teil-mathe"].length;
-
-    console.log(current_question_index);
-    console.log(len);
-    if (current_question_index < len)
-        display_answers(current_question_index);
-    else
-        display_stats();
-}
-
-function display_stats()
-{
-
-    // delete 
-    while(document.body.firstChild != null)
-        document.body.removeChild(document.body.firstChild);
-
-    
-
-
-    l_correct_answers = document.createElement("LABEL");
-    l_correct_answers.innerHTML = "richtig: "+n_correct_answers + " von ";
-    //l_correct_answers.inn
-    l_wrong_answers = document.createElement("LABEL");
-    l_wrong_answers.innerHTML = "falsch: "+ n_wrong_answers;
-
-    document.body.appendChild(l_correct_answers);
-    document.body.appendChild(l_wrong_answers);
-    return;
 }
 
 function setup()
@@ -203,7 +77,7 @@ function setup()
           <div id="question_label"></div>
     <div id="question_box"></div>
     <label id="stats_label"></label>
-    <ol id="answer_list"></ol>
+    <ul id="answer_list"></ul>
     
       </div>
     

@@ -33,10 +33,14 @@ class Presenter
             btn.innerText = element;
             btn.setAttribute("class", "btn")
 
-            btn.addEventListener("click", (event) =>
+            btn.addEventListener("click", (event) => {
                 // give the list item value back to view; its the selected index
+
+                this.buttons.forEach((button) =>
+                    button.disabled = true);
+
                 this.view.on_answer_selected(event.target.parentElement.value)
-            );
+            });
 
             this.buttons.push(btn);
             console.log(this.buttons);
@@ -73,7 +77,10 @@ class Presenter
         });
 
         this.dropdown.addEventListener("change", (event) =>
-            this.view.on_topic_selected(this.dropdown.value));
+        {   
+            this.clearChilds(this.stats_label);
+            this.view.on_topic_selected(this.dropdown.value)
+        });
     }
 
     colorButton(button_index, color)
