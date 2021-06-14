@@ -18,6 +18,8 @@ class View
     init()
     {
         this.current_question_index = 0;
+        this.right_answers = 0;
+        this.wrong_answers = 0;
     }
 
 
@@ -28,7 +30,7 @@ class View
     {
         this.init();
         this.current_topic = topic;
-        this.current_question_index = 0;
+        //this.current_question_index = 0;
         this.total_questions = this.model.getTasks(topic).length;
 
         this.sendTask();
@@ -40,13 +42,13 @@ class View
     sendTask()
     {
         console.log(this.model);
-        console.log(this.current_topic);
-        console.log(this.current_question_index);
-
-        var task = this.model.getQuestionAndAnswers(this.current_topic, this.current_question_index);
+        //console.log(this.current_topic);
+        //console.log(this.current_question_index);
+        console.log(this.model.questions)
+        const task = this.model.getQuestionAndAnswers(this.current_topic, this.current_question_index);
         console.log(task);
-
-        var answers = task["l"];
+        //task = tasks.then(x=>x)
+        var answers = task.options; 
 
         // save correct answer
         var correct = answers[0];
@@ -58,7 +60,7 @@ class View
         this.correct_answer_index = answers.indexOf(correct);
 
         this.presenter.displayAnswers(answers);
-        this.presenter.displayQuestion(task["a"]);
+        this.presenter.displayQuestion(task.text);
     }
 
     // callback when user selects an answer button;
@@ -93,14 +95,20 @@ class View
         console.log("curr "+this.current_question_index)
         console.log("tot "+ this.total_questions)
         if(this.current_question_index >= this.total_questions)
-            setTimeout(() => this.presenter.displayStats(this.right_answers, this.wrong_answers, this.total_questions), 1000);
+            setTimeout(() => 
+            {
+                this.presenter.displayStats(this.right_answers, this.wrong_answers, this.total_questions);
+                this.init();
+            }, 1000);
         else
             setTimeout(() => this.sendTask(), 1000);
             
         console.log("selec2")
-
-            
-
         
+    }
+
+    on_again()
+    {
+        this.sendTask();
     }
 }

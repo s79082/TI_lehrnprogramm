@@ -36,26 +36,40 @@ function loadDoc() {
   xhttp.send();
 }
 
-function setup()
+async function setup()
 {   
     lanswer = document.getElementById("answer_list");
     lquestion = document.getElementById("question_label");
     lstats = document.getElementById("stats_label");
     stopic = document.getElementById("topic_select");
     presenter = new Presenter(null, lanswer, lquestion, lstats, stopic);
-    model = new Model();
+    var model = new Model();
     view = new View(model, presenter);
     presenter.view = view;
     view.init();
-    view.on_topic_selected("teil-mathe");
-    view.sendTask()    
-    presenter.displayTopicSelection(model.getTopics());
+    //model.load();
+    await model.getAllTasks();
+    alert(model.questions)
+   // setTimeout(()=> 
+   // {
+      console.log(model.questions);
+      let topics = model.getTopics();
+    console.log(topics)
+    presenter.displayTopicSelection(topics);
+    view.on_topic_selected(topics[0]);
+    //model.questions = ["a"];
+    view.sendTask() ;
+   // }, 500);
+    console.log(model)
+    console.log(model.questions)
+    //model.getAllTasks();  
+    
 }
     </script>
 </head>
 <body onload="setup();">
     <header>
-        <h2>Cities</h2>
+        <h2>Lernprogramm</h2>
       </header>
       
       <section>

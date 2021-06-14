@@ -62,6 +62,20 @@ class Presenter
         this.clearChilds(this.answer_list);
         this.clearChilds(this.question_label);
         this.stats_label.innerHTML = "Herzlichen Glückwunsch! Du hast von "+ total+ " Fragen " + right +" richtig und "+ wrong + " falsch beantwortet :)";
+
+        var btn = document.createElement("BUTTON");
+        btn.innerHTML = "erneut versuchen";
+        btn.setAttribute("class", "btn");
+        btn.addEventListener("click",
+            (event) => 
+                {
+                    this.view.on_again();
+                    this.clearChilds(this.stats_label);
+                    this.clearChilds(btn);
+                }
+        );
+
+        this.stats_label.appendChild(btn);
     }
 
     displayTopicSelection(topics)
