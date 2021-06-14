@@ -16,85 +16,29 @@ class Model {
         ]};
 */
   constructor() {
-    this.questions = [];
-    //this.load();
+    this.questions = new Array();
+    this.questions_obj = new Object();
   }
 
 
   // gets one task
   getQuestionAndAnswers(topic, question_index) {
-    //return this.getTasks(topic)[question_index];
-    return this.questions[topic][question_index];
+    return this.questions_obj[topic][question_index];
+
   }
 
   // gets all tasks of a topic
   getTasks(topic) {
-    //console.log(await this.getAllTasks())
-    //await this.getAllTasks();
-    //const result = this.getAllTasks().filter((task) => task.title ===topic);
-    //const result = this.getAllTasks().then((x)=>console.log(x.json()));
-    //var result =this.getAllTasks();
 
-    this.getAllTasks()
-    const tasks = this.questions;
-    //const te = this.getAllTasks()
-
-    //var tasks;
-    //const response = await fetch(url, {method: 'GET', headers: headers});
-
-    //const json = await response.json();
-    //const tasks = await json.content;
-    /*
-    tasks = await fetch(url, {method: 'GET', headers: headers}).then((res)=> res.json())
-    .then(x => x.content)
-    .then(
-      (quest) => quest.filter((task) => task.title == "REST")
-    ).then(x => console.log(x))
-*/
-    //var result = this.questions;
-    //var res = this.questions.filter((task) => task.title === topic)
-    console.log("tasks")
-    //const tasks = this.questions;
-    console.log(tasks)
-    let tmp = tasks.filter((task) => task.title === topic);
-    console.log(tmp)
-
-    return tmp;
-    //return this.questions[topic];
+    this.getAllTasks();
+    return this.questions_obj[topic];
   }
 
   // gets a list of all topics
   getTopics() {
-    /*
-    let headers = new Headers();
-    headers.set('Authorization', 'Basic ' + btoa(this.username + ":" + this.password));
-    let url = 'https://irene.informatik.htw-dresden.de:8888/api/quizzes';
 
-    //var tasks;
-    const response = await fetch(url, {method: 'GET', headers: headers});
-
-    const json = await response.json();
-    const tasks = await json.content;
-
-    */
-
-    //const tasks = this.getAllTasks().then(alert).then((tasks) => tasks.forEach(element => {
-    // console.log(element)
-    //}));
-    //const tasks = this.getAllTasks().then(console.log);
     this.getAllTasks();
-    console.log(this.questions);
-    let topics = [];
-    this.questions.forEach(element => {
-      topics.push(element.title)
-    });
-
-    // filter duplicates
-    let tmp = topics.filter((value, index, self) => self.indexOf(value) === index);
-
-    console.log(topics)
-
-    return tmp;
+    return this.topics;
 
   }
 
@@ -104,52 +48,29 @@ class Model {
     headers.set('Authorization', 'Basic ' + btoa(this.username + ":" + this.password));
     let url = 'https://irene.informatik.htw-dresden.de:8888/api/quizzes';
 
-    //var tasks;
     const response = await fetch(url, { method: 'GET', headers: headers });
 
-    //const tasks = fetch(url, {method: 'GET', headers: headers}).then(res => res.json())
-    // .then(json => json.content);
-    //fetch(url, {method: 'GET', headers: headers}).then(x=> this.questions = x.json());
-    //console.log(this.questions)
     const json = await response.json();
     const tasks = await json.content;
-    //const res = await fetch(url, {method: 'GET', headers: headers});
-    //const tasks = await res.content;
-    console.log(tasks);
-    //this.topics = [];
-    //tasks.forEach
 
-    this.questions = tasks;
-    console.log(this.questions);
-    //return this.questions;
+    this.trans(tasks);
 
-    //return tasks;
-  }
-  setTasks(t) {
-    this.questions = t;
-    //alert(this.questions);
   }
 
-  load() {
-    //this.getAllTasks();
-    var tmp;
-    var m = this;
-    var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function () {
-      if (this.readyState == 4 && this.status == 200) {
-        m.setTasks(JSON.parse(this.responseText).content)
+  trans(tasks_obj) {
+    this.topics = [];
+    tasks_obj.forEach((task) => {
+      // topics = title api
+      if (!this.topics.includes(task.title)) {
+        this.topics.push(task.title);
+        // create new tasks for topics
+        this.questions_obj[task.title] = new Array();
       }
-    };
-    //xhttp.withCredentials = false;
-    xhttp.open("GET", "https://irene.informatik.htw-dresden.de:8888/api/quizzes", true);
-    xhttp.setRequestHeader('Authorization', 'Basic ' + btoa(this.username + ":" + this.password));
 
-
-
-
-    xhttp.send();
+      let obj = { "a": task.text, "l": task.options };
+      this.questions_obj[task.title].push(obj);
+    });
   }
-
 
 
 

@@ -1,8 +1,6 @@
-class View
-{
+class View {
 
-    constructor(model, presenter)
-    {
+    constructor(model, presenter) {
         this.model = model;
         this.presenter = presenter;
         this.current_topic = null;
@@ -15,8 +13,7 @@ class View
         this.wrong_answers = 0;
     }
 
-    init()
-    {
+    init() {
         this.current_question_index = 0;
         this.right_answers = 0;
         this.wrong_answers = 0;
@@ -25,31 +22,28 @@ class View
 
     // callback when user selcts another topic; 
     // get the new questions from model;
-    // d62sisplay them in presenter
-    on_topic_selected(topic)
-    {
+    // dsisplay them in presenter
+    on_topic_selected(topic) {
         this.init();
         this.current_topic = topic;
         //this.current_question_index = 0;
         this.total_questions = this.model.getTasks(topic).length;
 
         this.sendTask();
-        
+
     }
 
     // prepares the answers;
     // sends answers and question to presenter
-    sendTask()
-    {
+    sendTask() {
         console.log(this.model);
         //console.log(this.current_topic);
         //console.log(this.current_question_index);
         console.log(this.model.questions)
         const task = this.model.getQuestionAndAnswers(this.current_topic, this.current_question_index);
         console.log(task);
-        //task = tasks.then(x=>x)
-        var answers = task.options; 
-
+        var answers = task.options;
+        var answers = task["l"];
         // save correct answer
         var correct = answers[0];
 
@@ -60,55 +54,46 @@ class View
         this.correct_answer_index = answers.indexOf(correct);
 
         this.presenter.displayAnswers(answers);
-        this.presenter.displayQuestion(task.text);
+        //this.presenter.displayQuestion(task.text);
+        this.presenter.displayQuestion(task["a"]);
     }
 
     // callback when user selects an answer button;
     // check if correct; update stats
     // answer_index is provided by presenter,
-    on_answer_selected(answer_index)
-    {
+    on_answer_selected(answer_index) {
 
-        console.log("selec")
-        if (this.correct_answer_index == null)
-        {
+        if (this.correct_answer_index == null) {
             console.log("no correct answer");
             return;
         }
-        if (answer_index == this.correct_answer_index)
-        {
+        if (answer_index == this.correct_answer_index) {
             this.right_answers++;
             this.presenter.colorButton(answer_index, "green");
         }
-            
-        else
-        {
+
+        else {
             this.wrong_answers++;
             this.presenter.colorButton(answer_index, "red");
-
 
         }
         // next question
         this.current_question_index++;
 
         // last one?
-        console.log("curr "+this.current_question_index)
-        console.log("tot "+ this.total_questions)
-        if(this.current_question_index >= this.total_questions)
-            setTimeout(() => 
-            {
+
+        if (this.current_question_index >= this.total_questions)
+            setTimeout(() => {
                 this.presenter.displayStats(this.right_answers, this.wrong_answers, this.total_questions);
                 this.init();
             }, 1000);
         else
             setTimeout(() => this.sendTask(), 1000);
-            
-        console.log("selec2")
-        
+
+
     }
 
-    on_again()
-    {
+    on_again() {
         this.sendTask();
     }
 }
